@@ -309,12 +309,9 @@ buffer, or in other words: this hook is ran by both
       (run-hooks 'imenu-list-after-jump-hook)
       (imenu-list--show-current-entry))))
 
-(defalias 'imenu-list-<=
-  (if (ignore-errors (<= 1 2 3))
-      #'<=
-    #'(lambda (x y z)
-        "Return t if X <= Y and Y <= Z."
-        (and (<= x y) (<= y z)))))
+(defun imenu-list-<= (&rest args)
+  (or (ignore-errors (apply #'<= args))
+      (car (-filter #'markerp args))))
 
 (defun imenu-list-position-translator ()
   "Get the correct position translator function for the current buffer.
